@@ -2,11 +2,14 @@ import React from "react";
 import Greet from './components/Greet';
 import Tracker from "./components/Tracker";
 import {nanoid} from "nanoid";
+import Sidebar from "./components/Sidebar";
 
 function App() {
 
   const [monthList, setMonthList] = React.useState([])
   const [currentMonth, setCurrentMonth] = React.useState(null)
+
+  const [totalMoney, setTotalMoney] = React.useState(0)
 
   function createMonth(){
     let monthlyExpense = {
@@ -36,6 +39,23 @@ function App() {
     })
   }
 
+  function changeTotal(newTotal){
+    setTotalMoney(newTotal)
+  }
+
+  function setCurrentMonthId(id){
+    for(let i in monthList){
+      if(monthList[i].id === id){
+        setCurrentMonth(monthList[i])
+      }
+    }
+  }
+
+  function deleteMonth(event, monthId){
+    event.stopPropagation()
+    setMonthList(oldMonthList => oldMonthList.filter(month => month.id !== monthId))
+  }
+
   return (
     <div className="App">
       {monthList.length === 0 
@@ -44,8 +64,21 @@ function App() {
           createMonth = {createMonth} 
         /> 
         :
-        //Vai ser currentMonth na direita depois
-        <Tracker currentMonth = {monthList[0]} addExpense = {addExpense}/>
+        <div className="main-app">
+          <Sidebar 
+            monthList = {monthList}
+            setCurrentMonthId = {setCurrentMonthId}
+            deleteMonth = {deleteMonth}
+            currentMonth = {currentMonth}
+            createMonth = {createMonth}
+          />
+          <Tracker 
+            currentMonth = {currentMonth} 
+            addExpense = {addExpense} 
+            totalMoney = {totalMoney}
+            changeTotal = {changeTotal}
+          />
+        </div>
       }
     </div>
   );

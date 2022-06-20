@@ -11,11 +11,14 @@ function App() {
 
   const [totalMoney, setTotalMoney] = React.useState(0)
 
+
   function createMonth(){
     let monthlyExpense = {
       expenses: [],
-      month: 2,
-      year: 2000,
+      month: new Date().getMonth() + 1,
+      year: new Date().getFullYear(),
+      budget: 0, 
+      monthTotal: 0,
       id: nanoid(),
     }
     setMonthList(oldMonthList => [...oldMonthList, monthlyExpense]) 
@@ -28,7 +31,7 @@ function App() {
       const newArray = []
 
       for(let i = 0; i < oldMonthList.length; i++) {
-          const oldMonth= oldMonthList[i]
+          const oldMonth = oldMonthList[i]
           if(oldMonth.id === currentMonth.id) {
               newArray.unshift({ ...oldMonth, expenses: currentMonth.expenses})
           } else {
@@ -39,8 +42,44 @@ function App() {
     })
   }
 
-  function changeTotal(newTotal){
-    setTotalMoney(newTotal)
+  function changeBudget(newTotal){
+
+    //alert(newTotal)
+
+    currentMonth.budget = newTotal
+    
+    setMonthList(oldMonthList => {
+      const newArray = []
+
+      for(let i = 0; i < oldMonthList.length; i++) {
+          const oldMonth = oldMonthList[i]
+          if(oldMonth.id === currentMonth.id) {
+              newArray.unshift({ ...oldMonth, budget: currentMonth.budget})
+          } else {
+              newArray.push(oldMonth)
+          }
+      }
+      return newArray
+    })
+  }
+
+  function changeMonthTotal(newTotal){
+
+    currentMonth.monthTotal = newTotal
+    
+    setMonthList(oldMonthList => {
+      const newArray = []
+
+      for(let i = 0; i < oldMonthList.length; i++) {
+          const oldMonth = oldMonthList[i]
+          if(oldMonth.id === currentMonth.id) {
+              newArray.unshift({ ...oldMonth, monthTotal: currentMonth.monthTotal})
+          } else {
+              newArray.push(oldMonth)
+          }
+      }
+      return newArray
+    })
   }
 
   function setCurrentMonthId(id){
@@ -75,8 +114,8 @@ function App() {
           <Tracker 
             currentMonth = {currentMonth} 
             addExpense = {addExpense} 
-            totalMoney = {totalMoney}
-            changeTotal = {changeTotal}
+            changeBudget = {changeBudget}
+            changeMonthTotal = {changeMonthTotal}
           />
         </div>
       }

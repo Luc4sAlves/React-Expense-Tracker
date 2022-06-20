@@ -1,6 +1,20 @@
 import React from "react";
 
 export default function Sidebar(props){
+
+    function monthYear(current){
+
+        /* get the name of current.month */
+        const monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"];
+        const month = monthNames[current.month - 1]
+        
+        /*get the first 3 letters of monthName*/
+        const monthNameShort = month.substring(0, 3)
+
+        return `${monthNameShort}/${current.year}`	
+    }
+
     const monthElements = props.monthList.map((month, index) => (
         <div key={month.id}>
             <div
@@ -9,7 +23,7 @@ export default function Sidebar(props){
                 }`}
                 onClick={() => props.setCurrentMonthId(month.id)}
             >
-                <h4 className="text-snippet">MM/AA</h4>
+                <h4 className="text-snippet">{monthYear(month)}</h4>
                 <button 
                     className="delete-btn"
                     onClick={(event) => props.deleteMonth(event, month.id)}

@@ -9,7 +9,7 @@ export default function Tracker(props){
         category: '',
     })
 
-    const [monthlyTotal, setMonthlyTotal] = React.useState(0)
+    //const [monthTotal, setmonthTotal] = React.useState(0)
 
     const [expenseTable, setExpenseTable] = React.useState(null)
 
@@ -27,36 +27,19 @@ export default function Tracker(props){
 
     function submitExpense(){
         props.addExpense(expense)
-        setMonthlyTotal(monthlyTotal + +expense.value)
+        props.changeMonthTotal(props.currentMonth.monthTotal + +expense.value)
         setAddingExpense(false)
     }
 
-    function displayCurrentMonthExpenses(){
-        const displayExpenses = []
-        const expenses = props.currentMonth.expenses
-        let totalExpenses = 0
-        for(let i in expenses){
-            displayExpenses.push(
-                <h3>{`${expenses[i].description}|${expenses[i].value}|${expenses[i].category}`}</h3>
-            )
-            totalExpenses += +expenses[i].value;
-        }
-        displayExpenses.push(
-            <h3>{`Total|${totalExpenses}|`}</h3>
-        )
-        setMonthlyTotal(totalExpenses)
-        return displayExpenses
-    }
-
     function handleTotalChange(event){
-        props.changeTotal(event.target.value)
+        props.changeBudget(event.target.value)
     }
 
     function totalColor(){
-        if(monthlyTotal >= props.totalMoney){
+        if(props.currentMonth.monthTotal >= props.currentMonth.budget){
             return 'value-red'
         }
-        else if(monthlyTotal < props.totalMoney && monthlyTotal >= props.totalMoney*70/100){
+        else if(props.currentMonth.monthTotal < props.currentMonth.budget && props.currentMonth.monthTotal >= props.currentMonth.budget*70/100){
             return 'value-orange'
         }
         return 'value-green'
@@ -84,18 +67,17 @@ export default function Tracker(props){
                 <tfoot>
                     <tr>
                         <td>Total</td>
-                        <td className={totalColor()}>{monthlyTotal}</td>
+                        <td className={totalColor()}>{props.currentMonth.monthTotal}</td>
                     </tr>
                 </tfoot>
             </table>
         )
     }
 
-
     return(
         <div className="tracker">
             <div className="top-info">
-                <span className="top-text">Total available this month: <input type = "number" value={props.totalMoney} onChange = {handleTotalChange}/></span>
+                <span className="top-text">Total available this month: <input type = "number" value={props.currentMonth.budget} onChange = {handleTotalChange}/></span>
             </div>
             <div className="expense-info">
                 <button className = 'add-expense' onClick={addExpenseInput}>Add new expense</button>
@@ -108,6 +90,7 @@ export default function Tracker(props){
                             name = "description"
                             value = {expense.description}
                             onChange = {handleExpenseChange}
+                            autoComplete = "off"
                         />
                         <input 
                             type = "number" 
@@ -124,6 +107,7 @@ export default function Tracker(props){
                             name = "category"
                             value={expense.category}
                             onChange = {handleExpenseChange}
+                            autoComplete = "off"
                         />
                         <button onClick={submitExpense}>Add expense</button>
                     </form>

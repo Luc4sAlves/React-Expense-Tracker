@@ -9,14 +9,34 @@ function App() {
   const [monthList, setMonthList] = React.useState([])
   const [currentMonth, setCurrentMonth] = React.useState(null)
 
-  const [totalMoney, setTotalMoney] = React.useState(0)
+  const [latestDate, setLatestDate] = React.useState([new Date().getMonth() + 1,  new Date().getFullYear()])
 
+  function getNextDate(){
+    if(latestDate[0] === -1){
+      setLatestDate([new Date().getMonth() + 1,  new Date().getFullYear()])
+      return latestDate
+    }
+    else{
+      if(latestDate[0] === 12){
+        setLatestDate(oldDate => [1, oldDate[1] + 1])
+        return latestDate
+      }
+      else{
+        setLatestDate(oldDate => [oldDate[0] + 1, oldDate[1]])
+        return latestDate
+      }
+    }
+  }
 
   function createMonth(){
+    getNextDate()
+    //const nextDate = getNextDate()
     let monthlyExpense = {
       expenses: [],
-      month: new Date().getMonth() + 1,
-      year: new Date().getFullYear(),
+      /*month: new Date().getMonth() + 1,
+      year: new Date().getFullYear(),*/
+      month: latestDate[0],
+      year: latestDate[1],
       budget: 0, 
       monthTotal: 0,
       id: nanoid(),
@@ -101,6 +121,7 @@ function App() {
         ?
         <Greet 
           createMonth = {createMonth} 
+          getNextDate = {getNextDate}
         /> 
         :
         <div className="main-app">

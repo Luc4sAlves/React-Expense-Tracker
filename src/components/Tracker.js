@@ -9,10 +9,6 @@ export default function Tracker(props){
         category: '',
     })
 
-    //const [monthTotal, setmonthTotal] = React.useState(0)
-
-    const [expenseTable, setExpenseTable] = React.useState(null)
-
     function handleExpenseChange(event){
         const {name, value} = event.target
         setExpense(oldExpense => ({
@@ -29,6 +25,12 @@ export default function Tracker(props){
         props.addExpense(expense)
         props.changeMonthTotal(props.currentMonth.monthTotal + +expense.value)
         setAddingExpense(false)
+        //setExpense to default
+        setExpense({
+            value: 0,
+            description: '',
+            category: '',
+        })
     }
 
     function handleTotalChange(event){
@@ -99,6 +101,7 @@ export default function Tracker(props){
                             name = "value"
                             value = {expense.value}
                             onChange = {handleExpenseChange}
+                            autoComplete = "off"
                         />
                         <input 
                             type = "text" 

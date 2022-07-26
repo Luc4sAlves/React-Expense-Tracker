@@ -6,14 +6,14 @@ import Sidebar from "./components/Sidebar";
 
 function App() {
 
-  // const [monthList, setMonthList] = React.useState(
-  //   () => JSON.parse(localStorage.getItem("monthList")) || [])
-  const [monthList, setMonthList] = React.useState([]);
+  const [monthList, setMonthList] = React.useState(
+    () => JSON.parse(localStorage.getItem("monthList")) || [])
+  //const [monthList, setMonthList] = React.useState([]);
 
   const [currentMonth, setCurrentMonth] = React.useState(monthList[0] || null)
 
-  const [latestDate, setLatestDate] = React.useState(
-    () => JSON.parse(localStorage.getItem("latestDate")) || [new Date().getMonth() + 1,  new Date().getFullYear()])
+   const [latestDate, setLatestDate] = React.useState(
+     () => JSON.parse(localStorage.getItem("latestDate")) || [new Date().getMonth() + 1,  new Date().getFullYear()])
   //const [latestDate, setLatestDate] = React.useState([new Date().getMonth() + 1,  new Date().getFullYear()])
 
   const [recurrentExpenses, setRecurrentExpenses] = React.useState([]);
@@ -106,7 +106,6 @@ function App() {
       return newArray
     }
     )
-    alert(recurrentExpenses.length)
   }
 
   function recurrentTotal(){

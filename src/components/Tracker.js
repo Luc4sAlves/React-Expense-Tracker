@@ -83,6 +83,7 @@ export default function Tracker(props){
                     <th>Description</th>
                     <th>Value</th>
                     <th>Category</th>
+                    <th>Recurrent</th>
                 </tr>
                 {table}
                 <tfoot>

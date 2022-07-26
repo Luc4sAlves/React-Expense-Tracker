@@ -295,6 +295,19 @@ code {
   color: rgb(26, 145, 99);
 }
 
+.recurrent{
+  color: #a8dced;
+  font-size: 15px;
+  text-align: center;
+  border-color: #37d4ad;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.checked{
+  color: rgb(26, 145, 99);
+}
+
 .gg-trash {
   box-sizing: border-box;
   position: relative;

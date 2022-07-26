@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { nanoid } from "nanoid";
 
 export default function Tracker(props){
 
@@ -7,6 +8,8 @@ export default function Tracker(props){
         value: 0,
         description: '',
         category: '',
+        recurrent: false,
+        id: nanoid(),
     })
 
     function handleExpenseChange(event){
@@ -30,6 +33,7 @@ export default function Tracker(props){
             value: 0,
             description: '',
             category: '',
+            recurrent: false,
         })
     }
 
@@ -47,6 +51,17 @@ export default function Tracker(props){
         return 'value-green'
     }
 
+    function switchRecurrent(expense){
+        if (expense.recurrent === false){
+            props.addRecurrent(expense)
+        }
+        else{
+            props.removeRecurrent(expense)
+        }
+        expense.recurrent = !expense.recurrent
+        props.changeRecurrent(expense)
+    }
+
     function createReactTable(expenses){
         const table = []
         for (let i in expenses) {
@@ -55,6 +70,10 @@ export default function Tracker(props){
                     <td>{expenses[i].description}</td>
                     <td>{expenses[i].value}</td>
                     <td>{expenses[i].category}</td>
+                    <td
+                        className={`recurrent ${expenses[i].recurrent ? 'checked' : 'not-checked'}`}
+                        onClick = {() => switchRecurrent(expenses[i])}
+                    >⟳</td>
                 </tr>
             )
         }
@@ -64,6 +83,7 @@ export default function Tracker(props){
                     <th>Description</th>
                     <th>Value</th>
                     <th>Category</th>
+                    <th>Recurrent</th>
                 </tr>
                 {table}
                 <tfoot>
